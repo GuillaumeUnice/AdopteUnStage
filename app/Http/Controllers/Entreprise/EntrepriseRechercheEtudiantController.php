@@ -13,24 +13,7 @@ use App\Repositories\EtudiantRepository;
 
 class EntrepriseRechercheEtudiantController extends Controller {
 
-    /*
-    |--------------------------------------------------------------------------
-    | Recherche etudiant Controller
-    |--------------------------------------------------------------------------
-    |
-    | Ce controller permet la recherche des etudiants par l'entreprise
-    |
-    */
 
-    /**
-     * Crée une nouvelle instance du controller de recherche d'etudiant par l'entreprise
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-
-    }
 
     /**
      * Retourne :

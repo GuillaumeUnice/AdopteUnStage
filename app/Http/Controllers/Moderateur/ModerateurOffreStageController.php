@@ -2,6 +2,7 @@
 
 use App\OffreStage;
 use App\Repositories\CompetenceRepository;
+use App\Repositories\OffreStageRepository;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,16 @@ use App\Entreprise;
 use App\Http\Controllers\OffreStageController;
 
 class ModerateurOffreStageController extends OffreStageController {
+
+
+    //Repository du modèle des offres de stage
+    protected $offreStageRepository;
+
+    public function __construct(OffreStageRepository $offreStageRepository)
+    {
+        $this->offreStageRepository = $offreStageRepository;
+    }
+
 
     /**
      * Affiche la liste de l'ensemble des offres de stages du moderateur
@@ -24,6 +35,7 @@ class ModerateurOffreStageController extends OffreStageController {
         return View::make('moderateur.liste_offre_stage')->with($array);
     }
 
+
     /**
      * Afficher une offre de stage
      * @param $id
@@ -31,8 +43,13 @@ class ModerateurOffreStageController extends OffreStageController {
     public function show($id)
     {
         $array = parent::show($id);
+
+        $array['specialites'] = $this->offreStageRepository->getSpecialitesPromotionOffre($id);
+        $array['valide'] = $this->offreStageRepository->isValide($id);
+
         return View::make('moderateur.afficher_offre')->with($array);
     }
+
 
 	/**
 	 * Affiche le formulaire de creation d'une nouvelle offre de stage
@@ -45,6 +62,7 @@ class ModerateurOffreStageController extends OffreStageController {
         $array['entreprises'] = Entreprise::all();
 		return View::make('moderateur.creation_offre_stage')->with($array);
 	}
+
 
 	/**
 	 * Enregistre la nouvelle offre de stage en BDD
@@ -73,8 +91,9 @@ class ModerateurOffreStageController extends OffreStageController {
 		} else {
 			return Redirect::back()->withInput()->withErrors('Publier une offre de stage échoué!');
 		}
-
 	}
+
+
 
 	/**
 	 * Show the form for editing the specified resource.
@@ -93,6 +112,7 @@ class ModerateurOffreStageController extends OffreStageController {
 
 	}
 
+
 	/**
 	 * Update l'offre de stage en BDD
 	 * @param  int  $id id de l'offre de stage
@@ -107,6 +127,7 @@ class ModerateurOffreStageController extends OffreStageController {
             return Redirect::back()->withInput()->withErrors('Update une offre de stage échoué!');
         }
 	}
+
 
 	/**
 	 * Supprimer une offre de stage

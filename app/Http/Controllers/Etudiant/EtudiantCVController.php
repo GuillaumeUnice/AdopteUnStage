@@ -13,17 +13,36 @@ use Illuminate\Support\Facades\Input;
 
 class EtudiantCVController extends Controller {
 
+    /*
+    |--------------------------------------------------------------------------
+    | CV Etudiant Controller
+    |--------------------------------------------------------------------------
+    |
+    | Ce controller permet la gestion de son CV (upload, edition)
+    |
+    */
 
     public function __construct()
     {
 
     }
 
+    /**
+     * obtenir le cv de l'etudiant
+     *
+     * @return \Illuminate\View\View
+     */
     public function getEtudiantCV(){
         $cv = Auth::user()->user->cv;
         return view('etudiant.cv', compact('cv'));
     }
 
+    /**
+     * update un cv de l'etudiant
+     *
+     * @param EtudiantCVRequest $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function postEtudiantCV(EtudiantCVRequest $request){
 
         $etudiant = Etudiant::find(Auth::user()->user->id);

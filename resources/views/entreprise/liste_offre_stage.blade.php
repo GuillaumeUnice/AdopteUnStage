@@ -29,6 +29,8 @@
 
     @include('generale.carte_offre_template', [
         'offres'  => $offres,
+        'valide_info' => $valide_info,
+        'candidat_info' => $candidat_info,
         'boutons' => 'entreprise.boutons.gestion_offres'
     ])
 

@@ -66,9 +66,9 @@ class AuthController extends Controller
      */
     public function getEtudiantInscription($token)
     {
-        if (!$token) die('Error 404');
+        if (!$token) return'Error 404';
         $token = Token::whereToken($token)->first();
-        if (!$token) die('Error 404');
+        if (!$token) return 'Error 404';
 
         return View::make('auth/register');
     }
@@ -80,9 +80,9 @@ class AuthController extends Controller
      */
     public function getModerateurInscription($token)
     {
-        if (!$token) die('Error 404');
+        if (!$token) return 'Error 404';
         $token = Token::whereToken($token)->first();
-        if (!$token) die('Error 404');
+        if (!$token) return 'Error 404';
 
         return View::make('auth/register');
     }
@@ -134,9 +134,9 @@ class AuthController extends Controller
 
     public function postEtudiantInscription($token, RegisterRequest $request)
     {
-        if (!$token) die('Error 404');
+        if (!$token) return 'Error 404';
         $token = Token::whereToken($token)->first();
-        if (!$token) die('Error 404');
+        if (!$token) return 'Error 404';
 
         $user_type = 'App\Etudiant';
         $etudiant = new Etudiant;
@@ -149,9 +149,9 @@ class AuthController extends Controller
 
     public function postModerateurInscription($token, RegisterRequest $request)
     {
-        if (!$token) die('Error 404');
+        if (!$token) return 'Error 404';
         $token = Token::whereToken($token)->first();
-        if (!$token) die('Error 404');
+        if (!$token) return 'Error 404';
 
         $user_type = 'App\Moderateur';
         $moderateur = new Moderateur;

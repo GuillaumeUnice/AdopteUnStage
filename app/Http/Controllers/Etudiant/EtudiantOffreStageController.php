@@ -3,6 +3,7 @@
 use App\OffreStage;
 use App\Repositories\CompetenceRepository;
 use App\Repositories\EtudiantRepository;
+use App\Repositories\OffreStageRepository;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;

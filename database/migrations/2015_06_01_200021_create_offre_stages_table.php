@@ -54,6 +54,16 @@ class CreateOffreStagesTable extends Migration {
             $table->integer('offre_stage_id')->unsigned();
             $table->foreign('offre_stage_id')->references('id')->on('offre_stages')->onDelete('cascade');
         });
+
+        Schema::create('offre_stage_specialite', function (Blueprint $table) {
+            $table->increments('id');
+
+            $table->integer('specialite_id')->unsigned();
+            $table->foreign('specialite_id')->references('id')->on('specialites')->onDelete('cascade');
+
+            $table->integer('offre_stage_id')->unsigned();
+            $table->foreign('offre_stage_id')->references('id')->on('offre_stages')->onDelete('cascade');
+        });
 	}
 
 	/**
@@ -65,6 +75,8 @@ class CreateOffreStagesTable extends Migration {
 	{
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
 
+        Schema::drop('offre_stage_specialite');
+        Schema::drop('competence_offre_stage');
         Schema::drop('offre_stages');
 
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');

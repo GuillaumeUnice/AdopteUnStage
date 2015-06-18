@@ -77,7 +77,7 @@
 
     <div class="input-group">
         <div class="input-group-addon"><i class="fa fa-envelope-o"></i></div>
-        <input class="form-control" type="email" name="email" id="email" placeholder="Email" />
+        <input class="form-control" type="email" name="email" id="email" placeholder="Email" required/>
         <div class="input-group-addon"><span>Email</span></div>
     </div>
     <br/>

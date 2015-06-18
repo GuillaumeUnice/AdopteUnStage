@@ -27,6 +27,7 @@
     <meta name="msapplication-TileColor" content="#000000">
     <meta name="msapplication-TileImage" content="{{ url('img/favicons/mstile-144x144.png') }}">
     <meta name="theme-color" content="#ffffff">
+    <link rel="icon" type="image/x-icon" href="{{ url('img/favicons/favicon.ico') }}" >
 
     <!-- Bootstrap core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">

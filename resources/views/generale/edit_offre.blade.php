@@ -122,7 +122,7 @@
     <div class="input-group">
         <div class="input-group-addon"><i class="fa fa-envelope-o"></i></div>
         <input class="form-control" type="email" name="email" id="email"
-               placeholder="Email" value="{{ $offre->email }}"/>
+               placeholder="Email" value="{{ $offre->email }}" required/>
         <div class="input-group-addon"><span>Email</span></div>
     </div>
     <br/>

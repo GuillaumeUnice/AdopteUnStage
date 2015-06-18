@@ -1,39 +1,32 @@
 <?php namespace App\Http\Controllers\Moderateur;
-/**
- * Created by PhpStorm.
- * User: Max
- * Date: 08/06/2015
- * Time: 13:21
- */
-
-namespace App\Http\Controllers\Moderateur;
 
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Moderateur\ValidationOffreStageRequest;
 use App\OffreStage;
+use App\Repositories\OffreStageRepository;
+use App\Repositories\PromotionRepository;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
 /**
  * Class ModerateurValidationOffreStageController
  * Classe chargée de la validation des offres de stage par les moderateurs
+ *
  * @package App\Http\Controllers\Moderateur
  */
 class ModerateurValidationOffreStageController extends Controller
 {
 
-    /**
-     * Constructeur par defaut
-     */
-    public function __construct()
+    protected $offreStageRepository;
+    protected $promotionsRepository;
+
+    public function __construct(OffreStageRepository $offreStageRepository, PromotionRepository $promotionRepository)
     {
-
+        $this->offreStageRepository = $offreStageRepository;
+        $this->promotionsRepository = $promotionRepository;
     }
-
 
     /**
      * Récupère les offres de stage disponibles non validées
@@ -42,25 +35,38 @@ class ModerateurValidationOffreStageController extends Controller
      */
     public function getOffreStage()
     {
-        $toValidate = OffreStage::where('valide', 0)
-            ->whereHas('promotion.moderateurs', function($q){
-                $q->where('moderateurs.id', Auth::user()->user->id);
-            })
-            ->with('entreprise')
-            ->get();
+        $toValidate = $this->offreStageRepository->getOffreStageModerateurAvecEntreprises();
+        $specialites = $this->promotionsRepository->promotionWithSpecialiteArray();
 
-        return View::make('moderateur/validation_offrestage')->with('offres', $toValidate);
+        return View::make('moderateur/validation_offrestage')
+            ->with('offres', $toValidate)
+            ->with('specialites', $specialites);
     }
 
-
-    public function postOffreStage(ValidationOffreStageRequest $request)
+    /**
+     * Validation de l'offre de stage
+     *
+     * @param ValidationOffreStageRequest $request
+     * @return mixed
+     */
+    public function postOffreStage($id,OffreStageRepository $offreStageRepository)
     {
 
-        $offre = OffreStage::find(Input::get('_id'));
-        $offre->valide = 1;
-        $offre->save();
-        return Redirect::refresh()
-            ->with('flash_success', 'L\'offre de stage a bien été validée');
+        if($offreStageRepository->updateSpecialitesPromotionOffre($id,Input::get('specialites'))){
+
+            $offre = OffreStage::find($id);
+            $offre->valide = 1;
+            $offre->save();
+
+            return Redirect::back()
+                ->with('flash_success', 'L\'offre de stage a bien été validée');
+        }
+        else
+            return Redirect::back()
+                ->with('flash_danger', 'L\'offre de stage n\'a pas pu être validée');
+
+
+
     }
 
 }

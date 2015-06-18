@@ -29,6 +29,11 @@ class RepositoryServiceProvider extends ServiceProvider{
         );
 
         $this->app->bind(
+            'App\Repositories\EntrepriseRepository',
+            'App\Repositories\Impl\EntrepriseRepositoryImpl'
+        );
+
+        $this->app->bind(
             'App\Repositories\EtudiantRepository',
             'App\Repositories\Impl\EtudiantRepositoryImpl'
         );

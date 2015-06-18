@@ -49,7 +49,7 @@ class CreatePromotionsTable extends Migration {
 	{
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
 
-        Schema::drop('promotion_moderateur');
+        Schema::drop('moderateur_promotion');
         Schema::drop('promotions');
 
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');

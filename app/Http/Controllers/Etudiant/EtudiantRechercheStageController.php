@@ -43,7 +43,6 @@ class EtudiantRechercheStageController extends Controller {
                                 CompetenceRepository $competenceRepository,
                                 PromotionRepository $promotionRepository)
     {
-
         $array['offres'] = $offreStageRepository->getOffresAPourvoirWithCompetences();
         $array['competences'] = $competenceRepository->all();
         $array['promotions'] = $promotionRepository->promotionWithSpecialite();

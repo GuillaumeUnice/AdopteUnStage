@@ -5,7 +5,7 @@
     </a>
 </div>
 
-@if($offre->feedback_id && $offre->stagiaire_id!=null)
+@if($offre->feedback_id && $offre->stagiaire_id!=null && $offre->valide)
     <div class="btn btn-form btn-orange-edit">
         <a href="{{ URL('etudiant/historique-feedback/'.$offre->id) }}">
             <span class="glyphicon glyphicon-link"></span>
@@ -13,17 +13,20 @@
         </a>
     </div>
 @else
-    @if($offre->stagiaire_id!=null)
+    @if($offre->stagiaire_id!=null && $offre->valide)
     <div class="btn btn-form btn-red-trash">
         <a href="{{ URL('etudiant/historique-feedback/'.$offre->id.'/create') }}">
             <span class="glyphicon glyphicon-comment"></span>
-            <span class="historique__list__item__control__name">Feedback</span>
+            <span class="historique__list__item__control__name">Add Feedback</span>
         </a>
     </div>
-    @else
-        <div class="btn btn-form  btn-blue-view">
-            <span class="glyphicon glyphicon-lock"></span>
-            <span class="historique__list__item__control__name">Pourvoir</span>
+    @else @if($offre->valide)
+        <div class=" btn btn-form  btn-blue-view">
+            <a href="{{ URL('etudiant/historique-feedback/'.$offre->id.'/pourvoir') }}">
+                <span class="glyphicon glyphicon-lock"></span>
+                <span class="historique__list__item__control__name">Pourvoir</span>
+            </a>
         </div>
+        @endif
     @endif
 @endif

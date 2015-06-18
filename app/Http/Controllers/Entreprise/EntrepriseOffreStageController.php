@@ -1,9 +1,8 @@
 <?php namespace App\Http\Controllers\Entreprise;
 
 use App\Http\Controllers\OffreStageController;
-use App\Promotion;
 use App\Repositories\CompetenceRepository;
-use App\User;
+use App\Repositories\OffreStageRepository;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -13,11 +12,31 @@ use App\Http\Requests\OffreStageRequest;
 
 class EntrepriseOffreStageController extends OffreStageController {
 
+
+    //Repository du modèle des offres de stages
+    protected $offreStageRepository;
+
+    public function __construct(OffreStageRepository $offreStageRepository)
+    {
+        $this->offreStageRepository = $offreStageRepository;
+    }
+
+
+    /**
+     * entrer sur le page de la liste des offres de stages de l'entreprise
+     *
+     * @return mixed
+     */
 	public function index()
 	{
         $array = parent::index();
+        $array['valide_info'] = $this->offreStageRepository->all()->lists('valide', 'id');
+        $array['candidat_info']['nb'] = $this->offreStageRepository->getNbCandidats();
+        $array['candidat_info']['stagiaire'] = $this->offreStageRepository->getStagiaireId();
+
         return View::make('entreprise.liste_offre_stage')->with($array);
 	}
+
 
     /**
      * Affichage d'une offre de stage
@@ -42,6 +61,7 @@ class EntrepriseOffreStageController extends OffreStageController {
         return View::make('entreprise.creation_offre_stage')->with($array);
 	}
 
+
 	/**
 	 * Store a newly created resource in storage.
 	 *
@@ -59,6 +79,7 @@ class EntrepriseOffreStageController extends OffreStageController {
         }
 	}
 
+
 	/**
 	 * Show the form for editing the specified resource.
 	 *
@@ -74,6 +95,7 @@ class EntrepriseOffreStageController extends OffreStageController {
         }
 		return View::make('entreprise.edition_offre_stage')->with($array);
 	}
+
 
 	/**
 	 * Update the specified resource in storage.
@@ -91,7 +113,6 @@ class EntrepriseOffreStageController extends OffreStageController {
     }
 
 
-		
 	/**
 	 * Remove the specified resource from storage.
 	 *

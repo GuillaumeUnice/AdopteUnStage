@@ -6,6 +6,8 @@
 
 @section('style')
     <link rel="stylesheet" href="{{ asset('css/offre_stage.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/offre_specialites.css') }}"/>
+    <link rel="stylesheet" href="{{asset('css/libraries/select2.css')}}"/>
 @endsection
 
 @section('fil-ariane')
@@ -44,4 +46,6 @@
 
         });
     </script>
+    <script src="{{asset('js/libraries/select2.js')}}"></script>
+    <script src="{{asset('spespecialites_valider_offre.jsre.js')}}"></script>
 @endsection

@@ -144,7 +144,7 @@ return [
 		'App\Providers\ConfigServiceProvider',
 		'App\Providers\EventServiceProvider',
         'App\Providers\RepositoryServiceProvider',
-		'App\Providers\RouteServiceProvider',
+        'App\Providers\RouteServiceProvider',
 		'Barryvdh\Debugbar\ServiceProvider',
         'Collective\Html\HtmlServiceProvider',
 		'Lord\Laroute\LarouteServiceProvider',

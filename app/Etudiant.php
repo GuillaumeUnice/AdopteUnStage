@@ -19,10 +19,10 @@ class Etudiant extends Model {
         return $this->belongsToMany('App\Competence', 'competence_etudiant');
     }
 
-    /*public function offre_stages()
+    public function offre_stages()
     {
         return $this->belongsToMany('App\OffreStage', 'etudiant_offre_stage');
-    }*/
+    }
 
     public function promotion()
     {
@@ -49,7 +49,4 @@ class Etudiant extends Model {
         return $this->morphMany('App\User', 'user');
     }
 
-     public function offre_stages(){
-         return $this->belongsToMany('App\Etudiant');
-     }
 }

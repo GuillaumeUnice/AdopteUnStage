@@ -39,7 +39,6 @@ class CreateCompetencesTable extends Migration {
 	{
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
 
-        Schema::drop('competence_profile_etudiant');
 		Schema::drop('competences');
 
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');

@@ -1,33 +1,23 @@
-<?php
-
-namespace App\Http\Controllers\Moderateur;
+<?php namespace App\Http\Controllers\Moderateur;
 
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Moderateur\ModerateurPromotionsRequest;
 use App\Promotion;
+use App\Repositories\PromotionRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 
 class ModerateurPromotionsController extends Controller {
 
-    /**
-     * Instance du modèle Promotion
-     *
-     * @var Promotion|null
-     */
-    protected $promotion = null;
 
-    /**
-     * Constructeur du controller, il permet de réaliser l'injection
-     * du modèle de Promotion.
-     *
-     * @param Promotion $promotion
-     */
-    public function __construct(Promotion $promotion)
+    //Repository du modèle des promotions
+    protected $promotionRepository;
+
+    public function __construct(PromotionRepository $promotionRepository)
     {
-        $this->promotion = $promotion;
+        $this->promotionRepository = $promotionRepository;
     }
 
 
@@ -38,8 +28,8 @@ class ModerateurPromotionsController extends Controller {
      */
     public function getPromotions()
     {
-        $promotions = $this->promotion->all();
-        $moderateur_promotions = Auth::user()->user->promotions()->lists('promotion_id');
+        $promotions = $this->promotionRepository->all();
+        $moderateur_promotions = $this->promotionRepository->getUserLoggedPromotion()->lists('promotion_id');
 
         return view('moderateur.promotions', compact('promotions', 'moderateur_promotions'));
     }
@@ -54,7 +44,7 @@ class ModerateurPromotionsController extends Controller {
      */
     public function postPromotions(ModerateurPromotionsRequest $request)
     {
-        Auth::user()->user->promotions()->sync((Input::get('promotions')==null)?[]:Input::get('promotions'));
+        $this->promotionRepository->updateUserLoggedPromotion(Input::get('promotions'));
 
         return Redirect::refresh()
             ->with('flash_success', 'Les promotions auxquelles vous êtes rattaché ont été enregistrées.')

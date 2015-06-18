@@ -13,10 +13,6 @@
 @endsection
 
 @section('menu')
-    <li class="{{ Request::is('administrateur/accueil*') ? 'active':'' }}">
-        <a href="{{ url(route('accueil-administrateur')) }}"> Accueil</a>
-    </li>
-
     <li class="{{ Request::is('administrateur/identite-ecole*') ? 'active':'' }}">
         <a href="{{ url(route('admin_identite_ecole_get')) }}">Profil de l'école</a>
     </li>

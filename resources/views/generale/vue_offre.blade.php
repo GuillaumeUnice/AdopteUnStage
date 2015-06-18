@@ -12,20 +12,31 @@
                 <a href="{{ URL('etudiant/postuler/'.$offre->id) }}" class="btn-float-action btn-green" style="padding: 16px 18px;">
                     <i class="fa fa-rocket"></i>
                 </a>
-            @elseif(Auth::user()->user_type == 'App\Moderateur')
-                <span>Valider l'offre</span>
-                <form action="{{ URL('/moderateur/validation-offrestage') }}" id="valider" method="POST" style="display: inline;">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <input type="hidden" name="_id" value="{{ $offre->id }}">
-                    <a href="#" onclick="document.getElementById('valider').submit();" class="btn-float-action btn-green" style="padding: 16px 18px;">
+            @elseif(Auth::user()->user_type == 'App\Moderateur' && !$valide)
+                @if($specialites != null)
+                    <span>Valider l'offre</span>
+                    <a href="#"  class="btn-float-action btn-green" style="padding: 16px 18px;" id="valider_offre">
                         <i class="fa fa-check"></i>
                     </a>
-                </form>
+                @else
+                    <span>Valider l'offre</span>
+                    {!! Form::open(['url' => route('validation-offrestage', $offre->id), 'id' => 'valider','style' => 'display : inline']) !!}
+                        <a href="#" onclick="document.getElementById('valider').submit();" class="btn-float-action btn-green" style="padding: 16px 18px;">
+                            <i class="fa fa-check"></i>
+                        </a>
+                    {!! Form::close() !!}
+                @endif
             @endif
         </div>
     </div>
 
     <br/><br/>
+
+    @if(isset($specialites) && !$valide && Auth::user()->user_type == 'App\Moderateur')
+        @include('moderateur.validation_offrestage_specialites', ['specialites' => $specialites])
+    @endif
+
+
     <div class="offre__entreprise offre__block">
         <div class="offre__entreprise__header">
             <div class="offre__entreprise__header__title">
@@ -117,7 +128,7 @@
             <div class="offre__block__cell__left">
 
                 <div class="offre__infos__contact">
-                    <span class="titre">Contact : </span><br/><br/>
+                    <span class="titre">Contact : </span>
                     @if($offre->nom_contact || $offre->tel || $offre->email)
                         <span class="contenu">{{ $offre->nom_contact }}</span><br/>
                         <span class="contenu"><i>{{ $offre->tel }}</i></span><br/>

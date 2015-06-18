@@ -177,6 +177,25 @@ body {
 }
 
 
+@media (max-width: 1430px) {
+    .panel-content-inner {
+        width: 80%;
+    }
+}
+
+@media (max-width: 1300px) {
+    .panel-content-inner {
+        width: 90%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .panel-content-inner {
+        width: 100%;
+    }
+}
+
+
 @media(max-width:768px) {
     .panel-inner {
         padding-left: 0;

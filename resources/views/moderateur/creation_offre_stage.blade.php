@@ -33,5 +33,5 @@
 
 @section('script_js')
     <script src="{{asset('js/libraries/select2.js')}}"></script>
-    <script src="{{asset('js/competences_offre.js')}}"></script>
+    <script src="{{asset('js/competences_offre.js')}}></script>
 @endsection

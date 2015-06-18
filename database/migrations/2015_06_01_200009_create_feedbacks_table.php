@@ -35,7 +35,12 @@ class CreateFeedbacksTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('feedbacks');
-	}
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+
+        Schema::drop('feedbacks');
+
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+
+    }
 
 }

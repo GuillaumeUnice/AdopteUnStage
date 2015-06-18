@@ -4,6 +4,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Repositories\EtudiantRepository;
 use App\Repositories\OffreStageRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
@@ -11,6 +12,16 @@ use App\User;
 
 
 class EtudiantAccueilController extends Controller {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Accueil Etudiant Controller
+    |--------------------------------------------------------------------------
+    |
+    | Ce controller permet d'afficher information importante des l'accueil de l'etudiant
+    | A savoir : son statut (en recherche de stage ou pas) et suggestion d'offre de stage
+    |
+    */
 
     protected $etudiantRepository;
     protected $offreStageRepository;
@@ -28,11 +39,11 @@ class EtudiantAccueilController extends Controller {
      *
      * @return View
      */
-    public function showAccueil()
+    public function showAccueil(UserRepository $userRepository)
     {
         $recherche = $this->etudiantRepository->getRecherche($this->etudiant->id);
         $suggestions = $this->getSuggestions();
-        $responsables = $this->getListModerateurs();
+        $responsables = $userRepository->getListModerateurs($this->etudiant->promotion_id);
 
         return view('etudiant.home', compact('recherche', 'suggestions', 'responsables'));
     }
@@ -59,21 +70,4 @@ class EtudiantAccueilController extends Controller {
             $this->etudiant
         );
     }
-
-
-    /**
-     * Retourne la liste des modérateurs
-     *
-     * @return mixed
-     */
-    private function getListModerateurs()
-    {
-        return User::where('user_type', 'App\Moderateur')->where('role_id', '2')
-            ->join('moderateur_promotion', 'moderateur_id', '=', 'users.user_id')
-            ->join('promotions', 'promotions.id', '=', 'moderateur_promotion.promotion_id')
-            ->where('promotion_id', $this->etudiant->promotion_id)
-            ->selectRaw('users.name,users.email,moderateur_promotion.moderateur_id, moderateur_promotion.promotion_id,promotions.nom AS promotion_nom')
-            ->get();
-    }
-
 }

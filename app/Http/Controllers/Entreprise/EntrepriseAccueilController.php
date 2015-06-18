@@ -1,13 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: user
- * Date: 14/06/15
- * Time: 19:31
- */
-
-namespace App\Http\Controllers\Entreprise;
-
+<?php namespace App\Http\Controllers\Entreprise;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -15,11 +6,17 @@ use Illuminate\Support\Facades\View;
 
 class EntrepriseAccueilController extends Controller {
 
-    /** calculer le pourcentage du profil de l'entreprise
+
+
+    /**
+     * Calculer le pourcentage de completion du profil de l'entreprise
      * @return mixed
      */
-    public function getPourcentageProfil(){
+    public function getPourcentageProfil()
+    {
+
         $entreprise=Auth::user()->user;
+
         $index=0;
 
         if($entreprise->logo)
@@ -43,9 +40,8 @@ class EntrepriseAccueilController extends Controller {
         if($entreprise->telephone)
             $index+=1;
         $pourcentage=$index/11;
-        //dd($pourcentage);
-        return View::make('entreprise.home')->with('pourcentage',$pourcentage);
 
+        return View::make('entreprise.home')->with('pourcentage',$pourcentage);
     }
 
 }

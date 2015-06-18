@@ -58,20 +58,34 @@ class EtudiantProfilController extends Controller {
         $array['etudiant_specialite'] = Auth::user()->user->specialite()->first();
 
         //calculer le pourcentage du profil de l'etudiant
-        $index=0;
-        if($array['etudiant']->promotion_id)
-            $index+=1;
-        if($array['etudiant']->specialite_id)
-            $index+=1;
-        if($array['etudiant']->cv)
-            $index+=1;
-        if($array['etudiant']->website)
-            $index+=1;
-        if($array['etudiant']->social)
-            $index+=1;
-        $array['pourcentage']=$index/5;
+        $array['pourcentage']=$this->getPourcentageProfilEtudiant();
 
         return View::make('etudiant.profil')->with($array);
+    }
+
+    /**
+     * renvoyer la force du profil de l'etudiant
+     * @return float
+     */
+    private function getPourcentageProfilEtudiant(){
+        $etudiant=Auth::user()->user;
+        $etudiant_profil=DB::table('profile_etudiants')->where('etudiant_id',$etudiant->id)->first();
+        $index=0;
+        if($etudiant->promotion_id)
+            $index+=1;
+        if($etudiant->specialite_id)
+            $index+=1;
+        if($etudiant->cv)
+            $index+=1;
+        if($etudiant->website)
+            $index+=1;
+        if($etudiant->social)
+            $index+=1;
+        if($etudiant_profil->professionnel)
+            $index+=1;
+        if($etudiant_profil->education)
+            $index+=1;
+        return $index/7;
     }
 
     /**
@@ -109,6 +123,5 @@ class EtudiantProfilController extends Controller {
         );
 
         return Redirect::refresh()->with('flash_success', 'Modification Profil enregistré!')->withInput();
-
     }
 }

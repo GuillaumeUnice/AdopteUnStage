@@ -112,9 +112,12 @@ Route::group(['prefix' => 'moderateur', 'middleware' => 'auth.moderateur'], func
     );
 
     //Methode post relative à la validation des offres de stage
-    Route::post('validation-offrestage',
-        'Moderateur\ModerateurValidationOffreStageController@postOffreStage'
-    );
+    Route::post('validation-offrestage/{id}',
+        [
+            'as'   => 'validation-offrestage',
+            'uses' => 'Moderateur\ModerateurValidationOffreStageController@postOffreStage'
+        ]
+    )->where('id', '[0-9]+');
 
 
     Route::resource('offre-stage', 'Moderateur\ModerateurOffreStageController');
@@ -240,6 +243,13 @@ Route::group(['prefix' => 'etudiant', 'middleware' => 'auth.etudiant'], function
         [
             'as' => 'historique-feedback',
             'uses' => 'Etudiant\EtudiantFeedBackController@getHistoriqueStage'
+        ]
+    );
+    //voir le historique des stages d'un etudiant
+    Route::get('historique-feedback/{id_offre}/pourvoir',
+        [
+            'as' => 'pouvoir-offre',
+            'uses' => 'Etudiant\EtudiantFeedBackController@pourvoirOffreStage'
         ]
     );
     //voir les details du stage et son feedback correspondant
@@ -414,7 +424,7 @@ Route::group(['prefix' => 'administrateur', 'middleware' => 'auth.administrateur
         [
             'as' => 'accueil-administrateur',
             'uses' => function () {
-                return View::make('admin.home');
+                return redirect(route('admin_identite_ecole_get'));
             }
         ]
     );

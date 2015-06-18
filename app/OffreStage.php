@@ -37,7 +37,7 @@ class OffreStage extends Model {
      */
     public function specialite()
     {
-        return $this->belongsTo('App\Specialite', 'specialite_id');
+        return $this->belongsToMany('App\Specialite');
     }
 
     /**

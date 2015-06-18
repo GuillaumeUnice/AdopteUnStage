@@ -43,19 +43,23 @@ class ModerateurStatistiquesPromotionController extends Controller
                                         UserRepository $userRepository)
     {
         // recuperation des promotions du moderateur dans un tableau objet promotion
-        $array['promotion'] = Auth::user()->user->promotions()->get();
+        $array['promotion'] = $this->promotionRepository->getUserLoggedPromotion()->get();
+
         //Enregistrement des id des promotions dans un tableau
         $id_promotion = array();
         foreach ($array['promotion'] as $value){
             array_push($id_promotion, $value->id);
         }
+
         // recuperation statistique par promotion des offres de stages
         $array['offre_stage'] = $offreStageRepository->getStatistiqueOffreStageParPromotion($id_promotion);
+
         // recuperation statistique par promotion des offres de etudiants
         $array['etudiant'] = $etudiantRepository->getStatistiqueEtudiantParPromotion($id_promotion);
 
         // nombre entreprise en attente de validation
         $array['validation_entreprise'] = $userRepository->getCountEntrepriseAttenteValidation();
+
         // nombre offre de stage concerant la promotion du moderateur en attente de validation
         $array['validation_offre_stage'] = $offreStageRepository->getCountOffreStageValiderParPromotionModerateur();
 

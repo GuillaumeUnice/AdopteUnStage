@@ -28,7 +28,12 @@ class CreateVariablesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('variables');
-	}
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+
+        Schema::drop('variables');
+
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+
+    }
 
 }

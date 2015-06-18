@@ -13,11 +13,14 @@
         </a>
     </div>
 @endif
-<div class="btn btn-form btn-red-trash">
-    <form action="{{ URL('entreprise/offre-stage/'.$offre->id) }}" method="POST" style="display: inline;">
-        <input name="_method" type="hidden" value="DELETE">
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        <button type="submit"> <span class="glyphicon glyphicon-trash"></span> </button>
-    </form>
-    <span class="historique__list__item__control__name">Effacer</span>
-</div>
+
+@if(!isset($candidat[$offre->id]))
+    <div class="btn btn-form btn-red-trash">
+        <form action="{{ URL('entreprise/offre-stage/'.$offre->id) }}" method="POST" style="display: inline;">
+            <input name="_method" type="hidden" value="DELETE">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <button type="submit"> <span class="glyphicon glyphicon-trash"></span> </button>
+        </form>
+        <span class="historique__list__item__control__name">Effacer</span>
+    </div>
+@endif

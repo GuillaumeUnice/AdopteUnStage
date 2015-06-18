@@ -19,21 +19,20 @@
     @include('generale.form_notification')
     @include('generale.flash_message')
 
-    <h3>Validation des entreprises</h3><br/>
-
-
-    @if($entreprises->first() == null)
-
-        <pre>Aucune entreprise à valider</pre>
-
-    @else
+    <div class="historique__header">
+        <div class="historique__header__title">
+            @if($entreprises->first() == null)
+                <span class="historique__header__title__span">Aucune entreprise à valider</span>
+            @else
+                <span class="historique__header__title__span">Valider les entreprises</span>
+            @endif
+        </div>
+    </div>
 
         @include('generale.carte_entreprise_template', [
             'entreprises'  => $entreprises,
             'boutons' => 'moderateur.boutons.validation_entreprises'
         ])
-
-    @endif
 
 
 @endsection

@@ -13,42 +13,26 @@ use App\Http\Requests\entreprise\ProfilEntrepriseRequest;
 class EntrepriseProfilController extends Controller {
     
 
-    /*
-    |--------------------------------------------------------------------------
-    | VProfil Entreprise Controller
-    |--------------------------------------------------------------------------
-    |
-    | Ce controller permet la gestion des profils d'entreprise
-    |
-    */
-
-    /**
-     * Crée une nouvelle instance du controller de profil d'Entreprise
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-
-    }
 
     /**
      * Affiche les entreprises en attente de validation
      *
      * @return View
      */
-    public function getEntrepriseProfil(){
+    public function getEntrepriseProfil()
+    {
         $array['entreprise'] = Auth::user()->user;
-
         return View::make('entreprise.profil')->with($array);
     }
+
 
     /**
      * Traitement du formulaire de profil
      *
      * @return Redirect
      */
-    public function postEntrepriseProfil(ProfilEntrepriseRequest $request){
+    public function postEntrepriseProfil(ProfilEntrepriseRequest $request)
+    {
 
         $entreprise = Entreprise::find(Auth::user()->user->id);
 
@@ -63,6 +47,8 @@ class EntrepriseProfilController extends Controller {
         $entreprise->sociaux = Input::get('sociaux');
         $entreprise->site = Input::get('site');
 
+        /* La transaction permet d'englober un ensemble d'actions. Soit l'ensemble se termine,
+           soit l'ensemble de ces actions sont annulées */
         DB::transaction(function() use ($request, $entreprise) {
             if ($request->hasFile('logo')) {
                 $file = $request->file('logo');
@@ -77,12 +63,4 @@ class EntrepriseProfilController extends Controller {
             return Redirect::refresh()->with('flash_success', 'Modification Profil enregistré!')->withInput();
     }
 
-
-    private function saveLogo(Entreprise $entreprise){
-        $file = $entreprise->logo;
-
-
-        Session::flash('success', 'Votre logo à bien été téléchargé');
-
-    }
 }

@@ -48,32 +48,52 @@ class OffreStageController extends Controller {
 
         if($array['offre']->promotion_id != null)
             $array['offre']['promotion'] = Promotion::find($array['offre']->promotion_id);
-
         if($array['offre']->specialite_id != null)
             $array['offre']['specialite'] = Specialite::find($array['offre']->specialite_id);
 
-        $array['feedbacks'] = OffreStage::where('entreprise_id', $array['offre']->entreprise_id)
+        $array['feedbacks'] = $this->getFeedbacks($id);
+        //dd($array['feedbacks']);
+
+        //les candidatures sur l'offre de stage
+        $array['candidatures']=$this->getCandidatures($id);
+
+        return $array;
+    }
+
+    /**
+     * renvoyer les feedback sur la meme entreprise de l'offre de stage
+     *
+     * @param $id
+     * @return mixed
+     */
+    private function getFeedbacks($id){
+        return OffreStage::where('entreprise_id', OffreStage::find($id)->entreprise_id)
             ->leftJoin('feedbacks','feedbacks.id','=','offre_stages.feedback_id')
             ->leftJoin('users', 'users.user_id', '=', 'offre_stages.stagiaire_id')
             ->where('users.user_type', 'App\Etudiant')
             ->select('feedbacks.titre', 'feedbacks.contenu','feedbacks.recrutement_feedback', 'feedbacks.isOuvert','users.name', 'users.email')
             ->whereNotNull('feedbacks.contenu')
             ->get();
-        //dd($array['feedbacks']);
+    }
 
-        //les candidatures sur l'offre de stage
-        $array['candidatures']=DB::table('etudiant_offre_stage')->where('offre_stage_id',$id)
-            ->join('users','etudiant_offre_stage.etudiant_id','=','users.user_id')
+    /**
+     *
+     * renvoyer les candidatures de l'offre de stage
+     *
+     * @param $id
+     * @return mixed
+     */
+    private function getCandidatures($id){
+        return DB::table('etudiant_offre_stage')->where('offre_stage_id',$id)
+            ->leftjoin('users','etudiant_offre_stage.etudiant_id','=','users.user_id')
             ->where('users.user_type','App\Etudiant')
-            ->selectRaw('offre_stage_id,etudiant_id,name,email')
-            ->join('etudiants','etudiant_id','=','etudiants.id')
-            ->selectRaw('offre_stage_id,etudiant_id,name,email,promotion_id')
-            ->join('promotions','promotion_id','=','promotions.id')
+//            ->selectRaw('offre_stage_id,etudiant_id,name,email')
+            ->leftjoin('etudiants','etudiant_id','=','etudiants.id')
+//            ->selectRaw('offre_stage_id,etudiant_id,name,email,promotion_id')
+            ->leftjoin('promotions','promotion_id','=','promotions.id')
             ->selectRaw('offre_stage_id,etudiant_id,name,email,promotions.nom As promotion_nom')
             ->get();
 
-        //dd($array['candidatures']);
-        return $array;
     }
 
     protected function isIntPositif($input) {

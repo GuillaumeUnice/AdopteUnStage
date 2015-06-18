@@ -30,6 +30,7 @@
 
     @include('generale.carte_offre_template', [
         'offres'  => $stages,
+        'valide_info' => $valide_info,
         'boutons' => 'etudiant.boutons.historique_offres'
     ])
 

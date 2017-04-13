@@ -1,3 +1,8 @@
+# AdopteUnStage
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=rD5HMUFsgcc
+" target="_blank"><img src="http://img.youtube.com/vi/rD5HMUFsgcc/0.jpg" 
+alt="Thumbnail Angular NgModule tutorial" width="240" height="180" border="10" /></a>
+
 ## Laravel PHP Framework
 
 [![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
